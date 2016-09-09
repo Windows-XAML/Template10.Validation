@@ -14,7 +14,7 @@
 
     <licenseUrl>http://aka.ms/Template10-License</licenseUrl>
 
-    <projectUrl>http://aka.ms/Template10-Nuget</projectUrl>
+    <projectUrl>https://github.com/Windows-XAML/Template10.Validation</projectUrl>
 
     <iconUrl>https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/NuGetLogo.png</iconUrl>
 
@@ -37,12 +37,14 @@
     <language />
 
     <releaseNotes>
-      Version 0.0.3-preview
-      Serialization support
-      Version 0.0.2-preview
-      Introduction of the sample
-      Version 0.0.1-preview
-      Introduction of the library
+Version 1.0.0
+First version release
+Version 0.0.3-preview
+Serialization support
+Version 0.0.2-preview
+Introduction of the sample
+Version 0.0.1-preview
+Introduction of the library
     </releaseNotes>
 
     <dependencies>

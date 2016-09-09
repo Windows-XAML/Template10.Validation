@@ -107,4 +107,49 @@ Above you saw how each property has an `Errors` property. In addition, there is 
 * `void MarkAsClean();`
 * `void Revert();`
 
+## Error indicator
 
+You will see that most of these properties are managed autoamtically by the base class. Calling `MarkAsClean()` or `Revert()` impacts `IsDirty` and `Value` respectively. That being said, you can also use them in tandem with the control wrapper that ships in the library. You would use it like this:
+
+````xaml
+<validate:ControlWrapper PropertyName="FirstName">
+    <TextBox Width="{StaticResource FieldWidth}"
+        Header="First Name"
+        Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+</validate:ControlWrapper>
+````
+
+By default the visual looks like this:
+
+![default look](https://github.com/Windows-XAML/Template10.Validation/raw/master/Assets/DefaultLook.png)
+
+## Customized error indicator
+
+The visual definition of the wrapper is defined in the library (https://github.com/Windows-XAML/Template10.Validation/blob/master/Library/Themes/Generic.xaml) and you can override it simply by changing the `Template` property of the wrapper. Here's how you might do it:
+
+````xaml
+<validate:ControlWrapper PropertyName="FirstName">
+    <validate:ControlWrapper.Template>
+        <ControlTemplate TargetType="validate:ControlWrapper">
+            <StackPanel DataContext="{TemplateBinding Property}">
+                <TextBlock Text="IsValid" />
+                <TextBlock Text="{Binding IsValid}" />
+                <TextBlock Text="Errors" />
+                <TextBlock Text="{Binding Errors.Count}" />
+                <ContentPresenter Content="{TemplateBinding Content}" />
+            </StackPanel>
+        </ControlTemplate>
+    </validate:ControlWrapper.Template>
+    <TextBox Width="{StaticResource FieldWidth}"
+                Header="First Name"
+                Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+</validate:ControlWrapper>
+````
+
+In the XAML above the `ControlTemplate` is created in-line, but could easily be moved to a resource and re-used in multiple controls. It also demonstrates who every control *could* have a separate look, if desired. The XAML above would render a look something like this: 
+
+![custom look](https://github.com/Windows-XAML/Template10.Validation/raw/master/Assets/CustomLook.png)
+
+I realize that's a silly use of the control, but it demonstrates an easy starting place.
+
+I hope you enjoy Template 10 Validation!

@@ -37,15 +37,16 @@
     <language />
 
     <releaseNotes>
-      Version 1.0.0
+      Version 0.0.3-preview
       Serialization support
-      Version 0.0.0
-      Introduction of the library.
+      Version 0.0.2-preview
+      Introduction of the sample
+      Version 0.0.1-preview
+      Introduction of the library
     </releaseNotes>
 
     <dependencies>
-      <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.1.0" />
-      <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="1.1.0" />
+      <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2" />
       <dependency id="Newtonsoft.Json" version="8.0.3" />
     </dependencies>
 
@@ -53,6 +54,7 @@
 
   <files>
     <file src="lib\" target="lib\uap10.0\" />
+    <file src="lib\Template10.Validation\" target="lib\uap10.0\Template10.Validation\" />
   </files>
 
 </package>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{F051BB74-A073-4D35-A185-B089579C52C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template10.Validation", "Library\Template10.Validation.csproj", "{F051BB74-A073-4D35-A185-B089579C52C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{AAE53064-C591-43FB-A8BE-9FED2104B98F}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{29036DA7
 	ProjectSection(SolutionItems) = preProject
 		Nuget\Build.cmd = Nuget\Build.cmd
 		Nuget\nuget.exe = Nuget\nuget.exe
-		Nuget\Validation.nuspec = Nuget\Validation.nuspec
+		Nuget\Template10.Validation.nuspec = Nuget\Template10.Validation.nuspec
 	EndProjectSection
 EndProject
 Global

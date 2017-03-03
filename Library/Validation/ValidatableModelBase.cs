@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Windows.Foundation;
 using Newtonsoft.Json;
 using Template10.Controls.Validation;
 using Template10.Interfaces.Validation;
@@ -29,6 +30,7 @@ namespace Template10.Validation
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event TypedEventHandler<object, bool> OnValidateCompleted;
 
         protected T Read<T>([CallerMemberName]string propertyName = null)
         {
@@ -63,6 +65,7 @@ namespace Template10.Validation
                 Errors.Add(error);
             }
             RaisePropertyChanged(nameof(IsValid));
+            OnValidateCompleted?.Invoke(this, IsValid);
             return IsValid;
         }
 
@@ -105,6 +108,18 @@ namespace Template10.Validation
         [NotMapped]
         [JsonIgnore]
         public bool IsDirty { get; }
+
+        public virtual bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null, bool validateAfter = true)
+        {
+            if (object.Equals(storage, value))
+                return false;
+
+            storage = value;
+            RaisePropertyChanged(propertyName);
+            if (validateAfter)
+                Validate();
+            return true;
+        }
 
         public void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {

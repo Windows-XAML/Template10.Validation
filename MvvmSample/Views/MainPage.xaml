@@ -1,0 +1,204 @@
+﻿<views:MainPageBase
+    x:Class="MvvmSample.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MvvmSample"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="using:MvvmSample.Views"
+    xmlns:valueConverters="using:MvvmSample.ValueConverters"
+    xmlns:maskedTextBox="using:BankOk.Controls.MaskedTextBox"
+    xmlns:controls="using:Template10.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:Template10.Behaviors"
+    mc:Ignorable="d"
+    DataContext="{Binding MainPageViewModel, Source={StaticResource Locator}}">
+
+    <Page.Resources>
+        <valueConverters:EnumToBoolConverter x:Key="EnumToBoolConverter"></valueConverters:EnumToBoolConverter>
+    </Page.Resources>
+
+    <Grid x:Name="Root" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.Resources>
+                <Storyboard x:Name="RightColumnFadeOutStoryboard">
+                    <FadeOutThemeAnimation Storyboard.TargetName="RightColumn"/>
+                </Storyboard>
+                <Storyboard x:Name="RightColumnFadeInStoryboard">
+                    <FadeOutThemeAnimation Storyboard.TargetName="RightColumn"/>
+                </Storyboard>
+            </Grid.Resources>
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="AdaptiveUi">
+                    <VisualState x:Name="Narrow">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0"/>
+                        </VisualState.StateTriggers>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="RightColumn" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.4" EnableDependentAnimation="True"/>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Normal">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="696"/>
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="LeftColumn.(Grid.ColumnSpan)" Value="1"/>
+                            <Setter Target="RightColumn.(Grid.Row)" Value="0"/>
+                            <Setter Target="RightColumn.(Grid.Column)" Value="1"/>
+                            <Setter Target="RightColumn.(Grid.ColumnSpan)" Value="1"/>
+                        </VisualState.Setters>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="RightColumn" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.4" EnableDependentAnimation="True"/>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <controls:PageHeader BackButtonVisibility="Collapsed" Content="Enter" Frame="{x:Bind Frame}">
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:EllipsisBehavior Visibility="Auto" />
+                </interactivity:Interaction.Behaviors>
+            </controls:PageHeader>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <RelativePanel x:Name="LeftColumn" 
+                           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock x:Name="LeftHeaderText" Text="Personal data"
+                           Margin="12"
+                           TextWrapping="Wrap" Style="{ThemeResource TitleTextBlockStyle}"/>
+
+                        <TextBox x:Name="LastNameTextBox" Margin="12"
+                         Header="Last name"
+                         Text="{Binding NameModel.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         PlaceholderText="Enter last name"
+                         InputScope="PersonalFullName"
+                         RelativePanel.Below="LeftHeaderText"
+                         RelativePanel.AlignLeftWithPanel="True"
+                         RelativePanel.AlignRightWithPanel="True"/>
+
+                        <TextBox x:Name="FirstNameTextBox" Margin="12"
+                             Header="First name"
+                             Text="{Binding NameModel.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            PlaceholderText="Enter first name"
+                             InputScope="PersonalFullName"
+                         RelativePanel.Below="LastNameTextBox"
+                         RelativePanel.AlignLeftWithPanel="True"
+                         RelativePanel.AlignRightWithPanel="True"/>
+
+                        <TextBox x:Name="MidNameTextBox" Margin="12"
+                             Header="Middle name"
+                             Text="{x:Bind ViewModel.NameModel.MidName, Mode=TwoWay}"
+                        PlaceholderText="Enter middle name"
+                             InputScope="PersonalFullName"
+                         RelativePanel.Below="FirstNameTextBox"
+                         RelativePanel.AlignLeftWithPanel="True"
+                         RelativePanel.AlignRightWithPanel="True"/>
+
+                        <StackPanel Orientation="Vertical" Margin="12"
+                            RelativePanel.Below="MidNameTextBox"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True">
+                            <TextBlock Text="Gender" Style="{ThemeResource BaseTextBlockStyle}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Content="Male" Tag="Male" GroupName="GenderGroup"
+                                 IsChecked="{x:Bind ViewModel.NameModel.Gender, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=Male}"/>
+                                <RadioButton Content="Female" Tag="Female" GroupName="GenderGroup"
+                                 IsChecked="{x:Bind ViewModel.NameModel.Gender, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=Female}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </RelativePanel>
+
+                    <RelativePanel x:Name="RightColumn"
+                           Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock x:Name="HeaderText" Text="Simplified identification"
+                           Margin="12"
+                           TextWrapping="Wrap" Style="{ThemeResource TitleTextBlockStyle}"/>
+
+                        
+
+                        <ToggleSwitch x:Name="EnableSimpleIdentifyToggle" Margin="12, 12, 12, 0"
+                             Header="Complete a simplified identity by filling in the fields below for full access to the sections of the application" 
+                             RelativePanel.Below="HeaderText"
+                             IsOn="{x:Bind ViewModel.NameModel.IsSimpleIdentify, Mode=TwoWay}"
+                             HeaderTemplate="{StaticResource WrapHeaderTemplate}"/>
+
+                        <TextBlock x:Name="SubHeaterText" TextWrapping="Wrap" Style="{ThemeResource CaptionTextBlockStyle}"
+                           Text="You can always perform this step later"
+                           Foreground="{ThemeResource AccentBrush}"
+                           RelativePanel.Below="EnableSimpleIdentifyToggle" Margin="12,0"/>
+
+                        <RelativePanel x:Name="SimpleIdentifyGroup" Visibility="{x:Bind EnableSimpleIdentifyToggle.IsOn, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}"
+                      RelativePanel.Below="SubHeaterText">
+
+                            <DatePicker x:Name="BirthDate" Margin="12"
+                                Header="Date of birth"
+                                Date="{x:Bind ViewModel.NameModel.BirthDate, Mode=TwoWay}"
+                                MaxYear="{x:Bind ViewModel.MaxDate}"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                RelativePanel.AlignRightWithPanel="False"/>
+
+                            <maskedTextBox:MaskedTextBox x:Name="PassportNumber" Margin="12"
+                                 MinWidth="296"
+                                 PromptChar=" "
+                                 InputMask="0000 000000"
+                                 PlaceholderText="Enter the series and number of passport"
+                                 Header="Passport series and number"
+                                 InputScope="NumericPin"
+                                 UnmaskedText="{x:Bind ViewModel.NameModel.PasportSeriesAndNumber, Mode=TwoWay}"                 
+                                 RelativePanel.Below="BirthDate" />
+
+                            <DatePicker x:Name="PassportDate" Margin="12"
+                                MinYear="{x:Bind BirthDate.Date, Mode=OneWay}"                                    
+                                Date="{x:Bind ViewModel.NameModel.PassportIssueDate, Mode=TwoWay}"
+                                MaxYear="{x:Bind ViewModel.MaxDate}"
+                                Header="Passport issue date"
+                                RelativePanel.Below="PassportNumber"/>
+
+
+                            <maskedTextBox:MaskedTextBox x:Name="SnilsNumber" Margin="12"
+                                 Header="SNILS number"
+                                 MinWidth="296"
+                                 PromptChar=" "
+                                 InputMask="000-000-000 00"
+                                 PlaceholderText="Enter the SNILS number"
+                                 InputScope="NumericPin"
+                                 UnmaskedText="{x:Bind ViewModel.NameModel.SnilsNumber, Mode=TwoWay}"
+                                 RelativePanel.Below="PassportDate"
+                                 RelativePanel.AlignLeftWithPanel="True"
+                                 RelativePanel.AlignRightWithPanel="False"/>
+                        </RelativePanel>
+                    </RelativePanel>
+
+                </Grid>
+            </ScrollViewer>
+
+            
+            <CommandBar Grid.Row="2" 
+                    IsOpen="{x:Bind ViewModel.IsCommandBarOpen, Mode=OneWay}"
+                    IsSticky="True">
+                <AppBarButton Label="register" 
+                          Command="{x:Bind ViewModel.RegisterUserCommand, Mode=OneTime}" Icon="Forward"/>
+            </CommandBar>
+        </Grid>
+    </Grid>
+</views:MainPageBase>
+

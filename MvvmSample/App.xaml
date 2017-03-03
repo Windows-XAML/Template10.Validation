@@ -1,0 +1,23 @@
+﻿<t10:BootStrapper
+    x:Class="MvvmSample.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MvvmSample"
+    xmlns:viewModels="using:MvvmSample.ViewModels"
+    xmlns:t10="using:Template10.Common"
+    RequestedTheme="Dark">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Custom.xaml"/>
+                <ResourceDictionary Source="Styles/Controls.xaml"/>
+                <ResourceDictionary Source="Styles/CommonResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <viewModels:ViewModelLocator x:Key="Locator"/>
+        </ResourceDictionary>
+    </Application.Resources>
+    
+</t10:BootStrapper>
+

@@ -1,6 +1,6 @@
 # Validation in Universal Windows Platform
 
-In Windows UWP XAML/C# apps, developers will discover that input controls do not support `DataAnnotation` or `ExceptionValidationRule` or `IDataErrorInfo` or `INotifyDataErrorInfo` or `BindingValidationError`. Even if the platform included these capabilities, there are significant limitations to each that make them a limiting option for application with significantreal-world data validation requirements.
+In Windows UWP XAML/C# apps, developers will discover that input controls do not support `DataAnnotation` or `ExceptionValidationRule` or `IDataErrorInfo` or `INotifyDataErrorInfo` or `BindingValidationError`. Even if the platform included these capabilities, there are significant limitations to each that make them a limiting option for application with significant real-world data validation requirements.
 
 ![nuget](https://github.com/Windows-XAML/Template10.Validation/raw/master/Assets/Nuget.png)
 
@@ -10,7 +10,7 @@ These validation libraries provide UWP developers a comprehensive solution to da
 
 ## Get started
 
-To get started with validation, your models need to inerit `Template10.Validation.ValidatableModelBase`. This will include an implementation of `INotifyPropertyChanged` in case you need it in your logic. Should your poco classes (models) not support inheriting from a new base class, then this validation library will not work for you. The enhancements to your model(s) will include:
+To get started with validation, your models need to inherit `Template10.Validation.ValidatableModelBase`. This will include an implementation of `INotifyPropertyChanged` in case you need it in your logic. Should your poco classes (models) not support inheriting from a new base class, then this validation library will not work for you. The enhancements to your model(s) will include:
 
 ### ValidatableModelBase properties
 
@@ -29,11 +29,11 @@ To get started with validation, your models need to inerit `Template10.Validatio
 * `protected T Read<T>([CallerMemberName] string propertyName = null);`
 * `protected void Write<T>(T value, [CallerMemberName] string propertyName = null, bool validateAfter = true);`
 
-In addition to ainheriting from `ValidatableModelBase` both the setter and getters of your model properties will need to change to the following syntax in order to take part in the underlying change tracking mechanism.
+In addition to inheriting from `ValidatableModelBase`, both the setter and getters of your model properties will need to change to the following syntax in order to take part in the underlying change tracking mechanism.
 
 #### Your model before
 
-````csharp
+```csharp
 public class User 
 {
     public int Id { get; set; }
@@ -41,11 +41,11 @@ public class User
     public string LastName { get; set; }
     public override string ToString() => $"{FirstName} {LastName}";
 }
-````
+```
 
 #### Your model after
 
-````csharp
+```csharp
 public class User : Template10.Validation.ValidatableModelBase
 {
     public int Id { get; set; }
@@ -53,13 +53,13 @@ public class User : Template10.Validation.ValidatableModelBase
     public string LastName { get { return Read<string>(); } set { Write(value); } }
     public override string ToString() => $"{FirstName} {LastName}";
 }
-````
+```
 
 ## Adding validation logic
 
-Once you have implemented these changes, you need to set the `Validator` property of your model - typically when they are created or just before they are exposed in your view-model. (Note: Itit is not required that you use the MVVP design pattern to use this library - but if you don't you're probably building your app all wrong). You would set your validator something like this:
+Once you have implemented these changes, you need to set the `Validator` property of your model - typically when they are created or just before they are exposed in your view-model. (Note: It is not required that you use the MVVP design pattern to use this library - but if you don't you're probably building your app all wrong). You would set your validator something like this:
 
-````csharp
+```csharp
 var user = new User
 {
     FirstName = "Jerry",
@@ -77,13 +77,13 @@ var user = new User
         }
     },
 };
-````
+```
 
-Notice in the code above how you are adding one or more errors to the `Errors` property of the model's property; you are not adding to the `Errors` property of the model. This allows errors on a field level. Property errors are automatically progated to the model-level property `Errors`. Any changes to that list will be overwritten.
+Notice in the code above how you are adding one or more errors to the `Errors` property of the model's property; you are not adding to the `Errors` property of the model. This allows errors on a field level. Property errors are automatically propagated to the model-level property `Errors`. Any changes to that list will be overwritten.
 
 ## Calling validation logic
 
-Once the validation logic is injected into the model, you can call the model's `Validate()` method to assess the current state of the model. You can repeatively call `Validate()` as the workflow in your app requires. If the validation logic has significant cost, calling `Validate()` too frequently could have a performance cost to your app. 
+Once the validation logic is injected into the model, you can call the model's `Validate()` method to assess the current state of the model. You can repeatedly call `Validate()` as the workflow in your app requires. If the validation logic has significant cost, calling `Validate()` too frequently could have a performance cost to your app. 
 
 ## New properties of your properties
 
@@ -109,15 +109,15 @@ Above you saw how each property has an `Errors` property. In addition, there is 
 
 ## Error indicator
 
-You will see that most of these properties are managed autoamtically by the base class. Calling `MarkAsClean()` or `Revert()` impacts `IsDirty` and `Value` respectively. That being said, you can also use them in tandem with the control wrapper that ships in the library. You would use it like this:
+You will see that most of these properties are managed automatically by the base class. Calling `MarkAsClean()` or `Revert()` impacts `IsDirty` and `Value` respectively. That being said, you can also use them in tandem with the control wrapper that ships in the library. You would use it like this:
 
-````xaml
+```xaml
 <validate:ControlWrapper PropertyName="FirstName">
     <TextBox Width="{StaticResource FieldWidth}"
         Header="First Name"
         Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 </validate:ControlWrapper>
-````
+```
 
 By default the visual looks like this:
 
@@ -127,7 +127,7 @@ By default the visual looks like this:
 
 The visual definition of the wrapper is defined in the library (https://github.com/Windows-XAML/Template10.Validation/blob/master/Library/Themes/Generic.xaml) and you can override it simply by changing the `Template` property of the wrapper. Here's how you might do it:
 
-````xaml
+```xaml
 <validate:ControlWrapper PropertyName="FirstName">
     <validate:ControlWrapper.Template>
         <ControlTemplate TargetType="validate:ControlWrapper">
@@ -144,9 +144,9 @@ The visual definition of the wrapper is defined in the library (https://github.c
                 Header="First Name"
                 Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 </validate:ControlWrapper>
-````
+```
 
-In the XAML above the `ControlTemplate` is created in-line, but could easily be moved to a resource and re-used in multiple controls. It also demonstrates who every control *could* have a separate look, if desired. The XAML above would render a look something like this: 
+In the XAML above the `ControlTemplate` is created in-line, but could easily be moved to a resource and re-used in multiple controls. It also demonstrates how every control *could* have a separate look, if desired. The XAML above would render a look something like this: 
 
 ![custom look](https://github.com/Windows-XAML/Template10.Validation/raw/master/Assets/CustomLook.png)
 

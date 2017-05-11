@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -13,6 +13,8 @@ namespace Template10.Validation
 {
     public abstract class ValidatableModelBase : IValidatableModel, INotifyPropertyChanged
     {
+        /*I think this is where the bug is found because this ctor. keeps calling Validate Method
+         wheter you set the validateAfter property, so I suggest to remove it from here.*/
         public ValidatableModelBase()
         {
             Properties.MapChanged += (s, e) =>
@@ -21,7 +23,7 @@ namespace Template10.Validation
                     Properties[e.Key].ValueChanged += (sender, args) =>
                     {
                         RaisePropertyChanged(e.Key);
-                        Validate();
+                        //Validate(); //You call RaisePropertyChanged inside Validate Method why Twice?
                         RaisePropertyChanged(nameof(IsDirty));
                         RaisePropertyChanged(nameof(IsValid));
                     };
@@ -46,23 +48,26 @@ namespace Template10.Validation
             if (!property.IsOriginalSet || !Equals(value, previous))
             {
                 property.Value = value;
-                if (validateAfter) Validate();
+                Validate(validateAfter);
             }
         }
 
-        public bool Validate()
+        public bool Validate(bool validateAfter = true)
         {
-            foreach (var property in Properties)
+            if (validateAfter)
             {
-                property.Value.Errors.Clear();
+                foreach (var property in Properties)
+                {
+                    property.Value.Errors.Clear();
+                }
+                Validator?.Invoke(this);
+                Errors.Clear();
+                foreach (var error in Properties.Values.SelectMany(x => x.Errors))
+                {
+                    Errors.Add(error);
+                }
+                RaisePropertyChanged(nameof(IsValid));
             }
-            Validator?.Invoke(this);
-            Errors.Clear();
-            foreach (var error in Properties.Values.SelectMany(x => x.Errors))
-            {
-                Errors.Add(error);
-            }
-            RaisePropertyChanged(nameof(IsValid));
             return IsValid;
         }
 

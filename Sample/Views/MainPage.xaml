@@ -13,6 +13,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:validate="using:Template10.Controls.Validation"
       xmlns:vm="using:Template10.Samples.ValidationSample.ViewModels"
+      xmlns:behaviors="using:Template10.Validation.Behaviors"
       mc:Ignorable="d">
 
     <Page.DataContext>
@@ -43,40 +44,112 @@
                         Padding="24,16">
 
                 <StackPanel.Resources>
+                    
                     <Style TargetType="validate:ControlWrapper">
                         <Setter Property="Margin" Value="0,4" />
                     </Style>
+                    
                     <x:Double x:Key="FieldWidth">350</x:Double>
+
+                    <Style TargetType="TextBox" x:Key="ErrorTextBoxStyle">
+                        <Setter Property="Background" Value="Red" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Style>
+
+                    <Style TargetType="CheckBox" x:Key="ErrorCheckBoxStyle">
+                        <Setter Property="Foreground" Value="Red" />
+                    </Style>
+                
                 </StackPanel.Resources>
 
                 <validate:ControlWrapper PropertyName="FirstName">
                     <TextBox Width="{StaticResource FieldWidth}"
                              Header="First Name"
-                             Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <!-- you don't have to use the ControlWrapper AND the behavior, this is just showing both -->
+                        <Interactivity:Interaction.Behaviors>
+                            <behaviors:ValidationBehavior PropertyName="FirstName">
+                                <behaviors:ValidationBehavior.WhenValidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{x:Null}" />
+                                </behaviors:ValidationBehavior.WhenValidActions>
+                                <behaviors:ValidationBehavior.WhenInvalidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{StaticResource ErrorTextBoxStyle}" />
+                                </behaviors:ValidationBehavior.WhenInvalidActions>
+                            </behaviors:ValidationBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </TextBox>
                 </validate:ControlWrapper>
 
                 <validate:ControlWrapper PropertyName="LastName">
                     <TextBox Width="{StaticResource FieldWidth}"
                              Header="Last Name"
-                             Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <!-- you don't have to use the ControlWrapper AND the behavior, this is just showing both -->
+                        <Interactivity:Interaction.Behaviors>
+                            <behaviors:ValidationBehavior PropertyName="LastName">
+                                <behaviors:ValidationBehavior.WhenValidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{x:Null}" />
+                                </behaviors:ValidationBehavior.WhenValidActions>
+                                <behaviors:ValidationBehavior.WhenInvalidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{StaticResource ErrorTextBoxStyle}" />
+                                </behaviors:ValidationBehavior.WhenInvalidActions>
+                            </behaviors:ValidationBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </TextBox>
                 </validate:ControlWrapper>
 
                 <validate:ControlWrapper PropertyName="Email">
                     <TextBox Width="{StaticResource FieldWidth}"
                              Header="Email"
-                             Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <!-- you don't have to use the ControlWrapper AND the behavior, this is just showing both -->
+                        <Interactivity:Interaction.Behaviors>
+                            <behaviors:ValidationBehavior PropertyName="Email">
+                                <behaviors:ValidationBehavior.WhenValidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{x:Null}" />
+                                </behaviors:ValidationBehavior.WhenValidActions>
+                                <behaviors:ValidationBehavior.WhenInvalidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{StaticResource ErrorTextBoxStyle}" />
+                                </behaviors:ValidationBehavior.WhenInvalidActions>
+                            </behaviors:ValidationBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </TextBox>
                 </validate:ControlWrapper>
 
                 <validate:ControlWrapper PropertyName="Birth">
                     <DatePicker Width="{StaticResource FieldWidth}"
                                 Date="{Binding Birth, Mode=TwoWay}"
-                                Header="Birthday" />
+                                Header="Birthday">
+                        <!-- you don't have to use the ControlWrapper AND the behavior, this is just showing both -->
+                        <Interactivity:Interaction.Behaviors>
+                            <behaviors:ValidationBehavior PropertyName="Birth">
+                                <behaviors:ValidationBehavior.WhenValidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{x:Null}" />
+                                </behaviors:ValidationBehavior.WhenValidActions>
+                                <behaviors:ValidationBehavior.WhenInvalidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{StaticResource ErrorTextBoxStyle}" />
+                                </behaviors:ValidationBehavior.WhenInvalidActions>
+                            </behaviors:ValidationBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </DatePicker>
                 </validate:ControlWrapper>
 
                 <validate:ControlWrapper PropertyName="IsAdmin">
                     <CheckBox Width="{StaticResource FieldWidth}"
                               Content="Administrator"
-                              IsChecked="{Binding IsAdmin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                              IsChecked="{Binding IsAdmin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <!-- you don't have to use the ControlWrapper AND the behavior, this is just showing both -->
+                        <Interactivity:Interaction.Behaviors>
+                            <behaviors:ValidationBehavior PropertyName="IsAdmin">
+                                <behaviors:ValidationBehavior.WhenValidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{x:Null}" />
+                                </behaviors:ValidationBehavior.WhenValidActions>
+                                <behaviors:ValidationBehavior.WhenInvalidActions>
+                                    <Core:ChangePropertyAction PropertyName="Style" Value="{StaticResource ErrorCheckBoxStyle}" />
+                                </behaviors:ValidationBehavior.WhenInvalidActions>
+                            </behaviors:ValidationBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </CheckBox>
                 </validate:ControlWrapper>
 
                 <StackPanel Margin="0,8,0,0" Orientation="Horizontal">

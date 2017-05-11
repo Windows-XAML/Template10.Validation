@@ -108,6 +108,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors.Validation\ValidationBehavior.cs" />
     <Compile Include="Controls.Validation\ObservableDictionary.cs" />
     <Compile Include="Converters.Validation\VisibleWhenFalseConverter.cs" />
     <Compile Include="Mvvm.Validation\IBindable.cs" />

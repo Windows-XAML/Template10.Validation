@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
   <metadata minClientVersion="3.0">
 
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <id>Template10-Validation</id>
 
@@ -37,6 +37,8 @@
     <language />
 
     <releaseNotes>
+      Version 1.0.2
+      Improves IsDirty logic in ViewModelBase
       Version 1.0.1
       Upgrade to NetCore 5.3.3
       Removed Template 10 from library

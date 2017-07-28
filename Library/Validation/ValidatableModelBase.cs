@@ -109,7 +109,7 @@ namespace Template10.Validation
 
         [NotMapped]
         [JsonIgnore]
-        public bool IsDirty => !Properties.Any(x => x.Value.IsDirty);
+        public bool IsDirty => Properties.Any(x => x.Value.IsDirty);
 
         public void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {

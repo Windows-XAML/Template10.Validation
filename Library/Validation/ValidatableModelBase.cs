@@ -8,6 +8,7 @@ using Template10.Controls.Validation;
 using Template10.Interfaces.Validation;
 using Windows.Foundation.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace Template10.Validation
 {
@@ -82,6 +83,13 @@ namespace Template10.Validation
 
         public void MarkAsClean()
         {
+            // Get all properties that has not been set yet
+            foreach (var property in GetType().GetProperties((BindingFlags)(-1)))
+            {
+                // Add all properties that has not been set to the Properties dictionary in order to be marked as clean later
+                if (!Properties.ContainsKey(property.Name))
+                    _ = property.GetValue(this);
+            }
             foreach (var property in Properties)
             {
                 property.Value.MarkAsClean();
